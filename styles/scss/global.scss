@@ -1,4 +1,11 @@
 $body-bg: #f8fafb;
 $body-color: #080e14;
 
+$primary: #080e14;
+$secondary: #94a6b3;
+
+$input-bg: $body-color;
+$input-color: $body-bg;
+$input-placeholder-color: $secondary;
+
 @import '../node_modules/bootstrap/scss/bootstrap';
