@@ -1,16 +1,21 @@
 'use client';
 import Image from 'next/image';
-import { useRef, FormEvent } from 'react';
+import { useRef, FormEvent, useState } from 'react';
+import { isAddress } from 'ethers';
+import { useRouter } from 'next/navigation';
 
 const Home: React.FC = () => {
+  const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const [inputValue, setInputValue] = useState<string>('');
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const inputVal = inputRef.current?.value;
     if (!inputVal) return;
-
-    console.log(inputVal);
+    if (!isAddress(inputVal)) return;
+    router.push(`/${inputVal}`);
   };
 
   return (
@@ -40,10 +45,18 @@ const Home: React.FC = () => {
           spellCheck="false"
           placeholder="Search Address"
           maxLength={42}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
         />
         <button className="btn btn-primary" type="submit">
           <Image
-            src={'assets/icons/search.svg'}
+            src={
+              inputValue === ''
+                ? '/assets/icons/search.svg'
+                : isAddress(inputValue)
+                ? '/assets/icons/check.svg'
+                : '/assets/icons/warning.svg'
+            }
             alt={'search'}
             width={24}
             height={24}
