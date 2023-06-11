@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { Open_Sans } from 'next/font/google';
 
-import '@styles/scss/global.scss';
+import '@styles/global.scss';
 import { Navbar } from '@components';
 
 const openSans = Open_Sans({ subsets: ['latin'] });
