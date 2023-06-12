@@ -1,4 +1,10 @@
 @import './variables';
 @import './animations';
 
+@import '../node_modules/bootstrap/scss/functions';
+@import '../node_modules/bootstrap/scss/variables';
+@import '../node_modules/bootstrap/scss/variables-dark';
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
 @import '../node_modules/bootstrap/scss/bootstrap';

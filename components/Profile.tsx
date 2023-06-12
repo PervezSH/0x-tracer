@@ -29,7 +29,7 @@ const Profile: FC<ProfileProps> = ({ address }) => {
         <h6 className="fw-semibold m-0">{`0x_per.eth`}</h6>
         <div className="d-flex flex-column flex-lg-row align-items-center gap-2">
           <p className="fs-6 text-secondary m-0">{address}</p>
-          <span className="badge d-flex align-items-center gap-1 bg-secondary text-body-bg">
+          <span className="badge d-flex align-items-center gap-1 bg-badge-bg text-primary py-2 px-3 rounded-4">
             <Image
               src={'/assets/icons/calender.svg'}
               alt={'calendar'}

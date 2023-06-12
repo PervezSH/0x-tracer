@@ -6,6 +6,10 @@ $secondary: #94a6b3;
 $success: #9dc644;
 $danger: #f05352;
 
+$custom-colors: (
+  'badge-bg': #f2f2f2,
+);
+
 $input-bg: $body-color;
 $input-color: $body-bg;
 $input-placeholder-color: $secondary;
