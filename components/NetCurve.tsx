@@ -89,16 +89,24 @@ const CustomizedXAxisTick: FC<{
 
 interface INetCurveProps {
   data: IData[];
+  tooltip?: boolean;
+  xAxis?: boolean;
+  height?: number;
 }
 
-const NetCurve: FC<INetCurveProps> = ({ data }) => {
+const NetCurve: FC<INetCurveProps> = ({
+  data,
+  tooltip = true,
+  xAxis = true,
+  height,
+}) => {
   const isNegative = percentageChange(
     data[data.length - 1].value,
     data[0].value
   ).isNegative;
 
   return (
-    <ResponsiveContainer width="100%" height={128}>
+    <ResponsiveContainer width="100%" height={height ? height : 128}>
       <AreaChart data={data}>
         <defs>
           <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
@@ -114,25 +122,29 @@ const NetCurve: FC<INetCurveProps> = ({ data }) => {
             />
           </linearGradient>
         </defs>
-        <XAxis
-          dataKey="timestamp"
-          axisLine={false}
-          tickLine={false}
-          interval="preserveStartEnd"
-          ticks={[data[0].timestamp, data[data.length - 1].timestamp]}
-          tick={<CustomizedXAxisTick />}
-          height={10}
-        />
+        {xAxis && (
+          <XAxis
+            dataKey="timestamp"
+            axisLine={false}
+            tickLine={false}
+            interval="preserveStartEnd"
+            ticks={[data[0].timestamp, data[data.length - 1].timestamp]}
+            tick={<CustomizedXAxisTick />}
+            height={10}
+          />
+        )}
         <YAxis hide={true} type="number" domain={['auto', 'auto']} />
-        <Tooltip
-          content={<CustomTooltip data={data} />}
-          wrapperStyle={{ visibility: 'visible' }}
-          cursor={{ strokeDasharray: '3 3' }}
-          position={{
-            x: 0,
-            y: 0,
-          }}
-        />
+        {tooltip && (
+          <Tooltip
+            content={<CustomTooltip data={data} />}
+            wrapperStyle={{ visibility: 'visible' }}
+            cursor={{ strokeDasharray: '3 3' }}
+            position={{
+              x: 0,
+              y: 0,
+            }}
+          />
+        )}
         <Area
           type="monotone"
           dataKey="value"

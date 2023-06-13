@@ -10,7 +10,7 @@ interface ProfileProps {
 
 const Profile: FC<ProfileProps> = ({ address }) => {
   return (
-    <div className="d-flex flex-column flex-lg-row  gap-3 mt-2 align-items-center">
+    <div className="d-flex flex-column flex-lg-row  gap-3 mt-4 align-items-center">
       <div>
         <Image
           src={'/assets/frames/avatar.svg'}

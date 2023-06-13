@@ -300,3 +300,12 @@ export const usdValue24h = [
   { timestamp: 1686552900, value: 20268259.76 },
   { timestamp: 1686553200, value: 20265713.02 },
 ];
+
+export const concisedUsdValue24h = [
+  { timestamp: 1686462900, value: 20370178.14 },
+  { timestamp: 1686479400, value: 20337900.49 },
+  { timestamp: 1686496800, value: 20327168.75 },
+  { timestamp: 1686515100, value: 20428266.44 },
+  { timestamp: 1686531600, value: 20316811.32 },
+  { timestamp: 1686553200, value: 20265713.02 },
+];

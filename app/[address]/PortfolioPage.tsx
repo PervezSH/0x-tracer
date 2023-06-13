@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Profile, Search, Hero } from '@components';
+import { Profile, Search, Hero, NetworkCard } from '@components';
 
 interface PortfolioPageProps {
   address: string;
@@ -12,6 +12,7 @@ const PortfolioPage: FC<PortfolioPageProps> = ({ address }) => {
       <Hero />
       <Search />
       <Profile address={address} />
+      <NetworkCard />
     </main>
   );
 };
