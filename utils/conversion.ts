@@ -1,19 +1,18 @@
-export function formatUSDValue(
+export function formatCurrencyValue(
   value: number,
   fractionDigits: number = 0,
-  showNegativeSign: boolean = false
+  showNegativeSign: boolean = false,
+  currencySign: string = '$'
 ): string {
   const isNegative = value < 0;
   const absoluteValue = Math.abs(value);
   const formattedValue = absoluteValue.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD',
     minimumFractionDigits: fractionDigits,
     maximumFractionDigits: fractionDigits,
   });
 
   const sign = isNegative && showNegativeSign ? '-' : '';
-  const formattedWithSymbol = `${sign}${formattedValue}`;
+  const formattedWithSymbol = `${sign}${currencySign}${formattedValue}`;
 
   return formattedWithSymbol;
 }

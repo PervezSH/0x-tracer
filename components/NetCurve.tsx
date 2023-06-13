@@ -10,29 +10,28 @@ import {
   XAxis,
 } from 'recharts';
 
-import {
-  usdValue24h,
-  percentageChange,
-  formatUSDValue,
-  getDateAndTime,
-} from '@utils';
+import { percentageChange, formatCurrencyValue, getDateAndTime } from '@utils';
+
+interface IData {
+  timestamp: number;
+  value: number;
+}
 
 const CustomTooltip: FC<{
+  data: IData[];
   active?: boolean;
   payload?: any;
   label?: String | Number;
-}> = ({ active, payload, label }) => {
-  let usdValue = usdValue24h[usdValue24h.length - 1].usdValue;
-  let percentage = percentageChange(usdValue, usdValue24h[0].usdValue);
-  let amountChange = formatUSDValue(usdValue - usdValue24h[0].usdValue);
-  let dateAndTime = getDateAndTime(
-    usdValue24h[usdValue24h.length - 1].timestamp
-  );
+}> = ({ data, active, payload, label }) => {
+  let value = data[data.length - 1].value;
+  let percentage = percentageChange(value, data[0].value);
+  let amountChange = formatCurrencyValue(value - data[0].value);
+  let dateAndTime = getDateAndTime(data[data.length - 1].timestamp);
 
   if (active && payload && payload.length) {
-    usdValue = payload[0].value;
-    percentage = percentageChange(usdValue, usdValue24h[0].usdValue);
-    amountChange = formatUSDValue(usdValue - usdValue24h[0].usdValue);
+    value = payload[0].value;
+    percentage = percentageChange(value, data[0].value);
+    amountChange = formatCurrencyValue(value - data[0].value);
     dateAndTime = getDateAndTime(Number(label));
   }
 
@@ -42,7 +41,7 @@ const CustomTooltip: FC<{
         <p
           className="fs-6 fw-bold m-0"
           style={{ textShadow: '0px 2.5px 5px rgba(8, 14, 20, 0.25)' }}
-        >{`$${usdValue}`}</p>
+        >{`${formatCurrencyValue(value, 2)}`}</p>
         <p
           className={`fw-semibold ${
             percentage.isNegative ? 'text-danger' : 'text-success'
@@ -88,15 +87,19 @@ const CustomizedXAxisTick: FC<{
   );
 };
 
-const NetCurve: FC = () => {
+interface INetCurveProps {
+  data: IData[];
+}
+
+const NetCurve: FC<INetCurveProps> = ({ data }) => {
   const isNegative = percentageChange(
-    usdValue24h[usdValue24h.length - 1].usdValue,
-    usdValue24h[0].usdValue
+    data[data.length - 1].value,
+    data[0].value
   ).isNegative;
 
   return (
     <ResponsiveContainer width="100%" height={128}>
-      <AreaChart data={usdValue24h}>
+      <AreaChart data={data}>
         <defs>
           <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
             <stop
@@ -116,16 +119,13 @@ const NetCurve: FC = () => {
           axisLine={false}
           tickLine={false}
           interval="preserveStartEnd"
-          ticks={[
-            usdValue24h[0].timestamp,
-            usdValue24h[usdValue24h.length - 1].timestamp,
-          ]}
+          ticks={[data[0].timestamp, data[data.length - 1].timestamp]}
           tick={<CustomizedXAxisTick />}
           height={10}
         />
         <YAxis hide={true} type="number" domain={['auto', 'auto']} />
         <Tooltip
-          content={<CustomTooltip />}
+          content={<CustomTooltip data={data} />}
           wrapperStyle={{ visibility: 'visible' }}
           cursor={{ strokeDasharray: '3 3' }}
           position={{
@@ -135,7 +135,7 @@ const NetCurve: FC = () => {
         />
         <Area
           type="monotone"
-          dataKey="usdValue"
+          dataKey="value"
           stroke={isNegative ? '#F05352' : '#9DC644'}
           fillOpacity={1}
           fill="url(#colorPv)"

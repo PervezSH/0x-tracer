@@ -2,6 +2,7 @@ import { FC } from 'react';
 import Image from 'next/image';
 
 import NetCurve from './NetCurve';
+import { usdValue24h } from '@utils';
 
 interface ProfileProps {
   address: string;
@@ -40,7 +41,7 @@ const Profile: FC<ProfileProps> = ({ address }) => {
           </span>
         </div>
       </section>
-      <NetCurve />
+      <NetCurve data={usdValue24h} />
     </div>
   );
 };
