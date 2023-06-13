@@ -1,7 +1,14 @@
 'use client';
 
 import { FC } from 'react';
-import { AreaChart, Tooltip, Area, ResponsiveContainer, YAxis } from 'recharts';
+import {
+  AreaChart,
+  Tooltip,
+  Area,
+  ResponsiveContainer,
+  YAxis,
+  XAxis,
+} from 'recharts';
 
 import {
   usdValue24h,
@@ -26,26 +33,58 @@ const CustomTooltip: FC<{
     usdValue = payload[0].value;
     percentage = percentageChange(usdValue, usdValue24h[0].usdValue);
     amountChange = formatUSDValue(usdValue - usdValue24h[0].usdValue);
-    dateAndTime = getDateAndTime(usdValue24h[Number(label)].timestamp);
+    dateAndTime = getDateAndTime(Number(label));
   }
 
   return (
     <div className="d-flex flex-column">
       <div className="d-flex gap-1 align-items-center">
-        <p className="fs-6 fw-bold m-0">{`$${usdValue}`}</p>
+        <p
+          className="fs-6 fw-bold m-0"
+          style={{ textShadow: '0px 2.5px 5px rgba(8, 14, 20, 0.25)' }}
+        >{`$${usdValue}`}</p>
         <p
           className={`fw-semibold ${
             percentage.isNegative ? 'text-danger' : 'text-success'
           }  m-0`}
-          style={{ fontSize: '14px' }}
+          style={{
+            fontSize: '14px',
+            textShadow: '0px 2.5px 5px rgba(8, 14, 20, 0.25)',
+          }}
         >
           {`${percentage.changeString} (${amountChange})`}
         </p>
       </div>
-      <p className="text-primary fw-semibold m-0" style={{ fontSize: '12px' }}>
+      <p
+        className="text-primary fw-semibold m-0"
+        style={{
+          fontSize: '12px',
+          textShadow: '0px 2.5px 5px rgba(8, 14, 20, 0.25)',
+        }}
+      >
         {dateAndTime}
       </p>
     </div>
+  );
+};
+
+const CustomizedXAxisTick: FC<{
+  x?: number;
+  y?: number;
+  payload?: any;
+}> = ({ x, y, payload }) => {
+  return (
+    <text
+      x={x}
+      y={y}
+      textAnchor="middle"
+      fill="#94a6b3"
+      style={{
+        fontSize: '12px',
+      }}
+    >
+      {getDateAndTime(payload.value)}
+    </text>
   );
 };
 
@@ -57,7 +96,7 @@ const NetCurve: FC = () => {
 
   return (
     <ResponsiveContainer width="100%" height={128}>
-      <AreaChart data={usdValue24h} margin={{ left: 10 }}>
+      <AreaChart data={usdValue24h}>
         <defs>
           <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
             <stop
@@ -72,16 +111,28 @@ const NetCurve: FC = () => {
             />
           </linearGradient>
         </defs>
+        <XAxis
+          dataKey="timestamp"
+          axisLine={false}
+          tickLine={false}
+          interval="preserveStartEnd"
+          ticks={[
+            usdValue24h[0].timestamp,
+            usdValue24h[usdValue24h.length - 1].timestamp,
+          ]}
+          tick={<CustomizedXAxisTick />}
+          height={10}
+        />
+        <YAxis hide={true} type="number" domain={['auto', 'auto']} />
         <Tooltip
           content={<CustomTooltip />}
           wrapperStyle={{ visibility: 'visible' }}
           cursor={{ strokeDasharray: '3 3' }}
           position={{
-            x: 10,
+            x: 0,
             y: 0,
           }}
         />
-        <YAxis hide={true} type="number" domain={['auto', 'auto']} />
         <Area
           type="monotone"
           dataKey="usdValue"
@@ -89,6 +140,7 @@ const NetCurve: FC = () => {
           fillOpacity={1}
           fill="url(#colorPv)"
           animationDuration={1000}
+          strokeWidth={1.5}
         />
       </AreaChart>
     </ResponsiveContainer>
