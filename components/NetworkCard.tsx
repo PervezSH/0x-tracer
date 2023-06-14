@@ -4,13 +4,21 @@ import Image from 'next/image';
 import { chainDetails, concisedUsdValue24h } from '@utils';
 import { NetCurve } from '@components';
 
-const NetworkCard: FC = () => {
+interface INetworkCardProps {
+  isSelected?: boolean;
+}
+
+const NetworkCard: FC<INetworkCardProps> = ({ isSelected = false }) => {
   return (
     <div
-      className="card bg-body-bg text-body-color rounded-4 shadow border-0"
+      className={`card network-card rounded-4 border-0 ${
+        isSelected
+          ? 'bg-body-bg shadow'
+          : 'bg-primary text-card-color on-hover-shadow'
+      } `}
       style={{ maxWidth: '222px', cursor: 'pointer' }}
     >
-      <div className="d-flex">
+      <div className="d-flex rounded-4">
         <div
           className="m-3 rounded-4 overflow-hidden"
           style={{
@@ -30,7 +38,7 @@ const NetworkCard: FC = () => {
             }}
           />
         </div>
-        <div className="card-body p-0 py-3 align-items-center">
+        <div className="card-body p-0 py-3 align-items-center rounded-4 shadow-none">
           <div className="d-flex gap-1 align-items-center">
             <h6
               className="card-title fw-semibold m-0 text-nowrap"
