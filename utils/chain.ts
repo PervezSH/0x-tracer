@@ -1,3 +1,5 @@
+export const chainIds = [1, 137, 56, 43114, 250, 10, 42161, 324];
+
 export interface IChainDetail {
   name: string;
   symbol: string;

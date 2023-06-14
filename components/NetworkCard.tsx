@@ -5,13 +5,17 @@ import { chainDetails, concisedUsdValue24h } from '@utils';
 import { NetCurve } from '@components';
 
 interface INetworkCardProps {
+  chainId: number;
   isSelected?: boolean;
 }
 
-const NetworkCard: FC<INetworkCardProps> = ({ isSelected = false }) => {
+const NetworkCard: FC<INetworkCardProps> = ({
+  chainId,
+  isSelected = false,
+}) => {
   return (
     <div
-      className={`card network-card rounded-4 border-0 ${
+      className={`network-card rounded-4 border-0 ${
         isSelected
           ? 'bg-body-bg shadow'
           : 'bg-primary text-card-color on-hover-shadow'
@@ -20,16 +24,16 @@ const NetworkCard: FC<INetworkCardProps> = ({ isSelected = false }) => {
     >
       <div className="d-flex rounded-4">
         <div
-          className="m-3 rounded-4 overflow-hidden"
+          className="m-3 me-0 rounded-4 overflow-hidden"
           style={{
             width: '50px',
             height: '50px',
-            backgroundColor: `${chainDetails[43114].themeBg}`,
+            backgroundColor: `${chainDetails[chainId].themeBg}`,
           }}
         >
           <Image
-            src={chainDetails[43114].logoPath}
-            alt={chainDetails[43114].name}
+            src={chainDetails[chainId].logoPath}
+            alt={chainDetails[chainId].name}
             width={40}
             height={40}
             style={{
@@ -38,8 +42,11 @@ const NetworkCard: FC<INetworkCardProps> = ({ isSelected = false }) => {
             }}
           />
         </div>
-        <div className="card-body p-0 py-3 align-items-center rounded-4 shadow-none">
-          <div className="d-flex gap-1 align-items-center">
+        <div className="card-body p-3 align-items-center rounded-4 shadow-none">
+          <div
+            className="d-flex gap-1 align-items-center"
+            style={{ width: '125px' }}
+          >
             <h6
               className="card-title fw-semibold m-0 text-nowrap"
               style={{ maxWidth: '92px' }}
