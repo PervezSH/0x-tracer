@@ -7,6 +7,9 @@ import { NetworkCard } from '@components';
 
 const NetworkLists: FC = () => {
   const scrollRef = useHorizontalScroll();
+
+  const selectedChainId = chainIds[0];
+
   return (
     <div
       ref={scrollRef}
@@ -14,7 +17,11 @@ const NetworkLists: FC = () => {
       style={{ margin: '-18px 0px' }}
     >
       {chainIds.map((chainId) => (
-        <NetworkCard key={chainId} chainId={chainId} isSelected={false} />
+        <NetworkCard
+          key={chainId}
+          chainId={chainId}
+          isSelected={selectedChainId === chainId}
+        />
       ))}
     </div>
   );

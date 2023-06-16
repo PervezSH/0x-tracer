@@ -15,7 +15,7 @@ const NetworkCard: FC<INetworkCardProps> = ({
 }) => {
   return (
     <div
-      className={`network-card rounded-4 border-0 ${
+      className={`rounded-4 border-0 ${
         isSelected
           ? 'bg-body-bg shadow'
           : 'bg-primary text-card-color on-hover-shadow'
@@ -48,7 +48,9 @@ const NetworkCard: FC<INetworkCardProps> = ({
             style={{ width: '125px' }}
           >
             <h6
-              className="card-title fw-semibold m-0 text-nowrap"
+              className={`card-title fw-semibold m-0 text-nowrap ${
+                isSelected ? 'text-primary' : 'text-card-color'
+              }`}
               style={{ maxWidth: '92px' }}
             >{`$18,966,580`}</h6>
             <p
