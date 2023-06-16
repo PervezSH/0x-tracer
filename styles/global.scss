@@ -20,10 +20,30 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
   }
 }
 
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
 .scrollbar-none {
-  ::-webkit-scrollbar {
-    display: none;
-  }
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+::-webkit-scrollbar {
+  height: 5px;
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: $secondary;
+  border-radius: 10px;
+}
+
+* {
+  scroll-behavior: smooth;
+  scrollbar-width: thin; /* For Firefox */
+  scrollbar-color: $secondary transparent; /* For Firefox */
 }
 
 @import '../node_modules/bootstrap/scss/bootstrap';
