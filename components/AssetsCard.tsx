@@ -85,12 +85,18 @@ const AssetsCard: FC = () => {
             >
               {formatCurrencyValue(asset.value, 2)}
             </p>
-            <p
-              className="text-primary m-0 p-0 text-end w-100"
+            <div
+              className="d-flex w-100 justify-content-end position-relative"
               style={{ minWidth: '80px', maxWidth: '200px' }}
             >
-              {`${asset.percentage}%`}
-            </p>
+              <p className="text-primary m-0 p-0 text-end z-1">
+                {`${asset.percentage}%`}
+              </p>
+              <div
+                className="h-100 rounded-3 position-absolute bg-success opacity-50 z-0"
+                style={{ width: `${asset.percentage}%` }}
+              ></div>
+            </div>
             <p
               className={`m-0 p-0 text-end w-100 ${
                 asset.change24h > 0 ? 'text-success' : 'text-danger'
