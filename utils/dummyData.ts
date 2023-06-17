@@ -309,3 +309,11 @@ export const concisedUsdValue24h = [
   { timestamp: 1686531600, value: 20316811.32 },
   { timestamp: 1686553200, value: 20265713.02 },
 ];
+
+export const pieChartData = [
+  { id: 0, symbol: 'ETH', value: 1890541 },
+  { id: 1, symbol: 'MATIC', value: 1142735 },
+  { id: 2, symbol: 'FTM', value: 254183 },
+  { id: 3, symbol: 'USDC', value: 185662 },
+  { id: 4, symbol: 'OTHERS', value: 113918 },
+];

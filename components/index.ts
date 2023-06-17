@@ -5,3 +5,5 @@ export { default as Profile } from './Profile';
 export { default as NetCurve } from './NetCurve';
 export { default as NetworkCard } from './NetworkCard';
 export { default as NetworkLists } from './NetworkLists';
+export { default as OverviewCard } from './OverviewCard';
+export { default as OverviewChart } from './OverviewChart';
