@@ -48,6 +48,7 @@ const renderActiveShape = (props: any) => {
         startAngle={startAngle}
         endAngle={endAngle}
         fill={fill}
+        style={{ cursor: 'pointer' }}
       />
       <Sector
         cx={cx}
@@ -57,6 +58,7 @@ const renderActiveShape = (props: any) => {
         startAngle={startAngle}
         endAngle={endAngle}
         fill={fill}
+        style={{ cursor: 'pointer' }}
       />
       <Sector
         cx={cx}
@@ -66,6 +68,7 @@ const renderActiveShape = (props: any) => {
         innerRadius={outerRadius - (1 - percent) * 10 + 6}
         outerRadius={outerRadius - (1 - percent) * 10 + 10}
         fill={fill}
+        style={{ cursor: 'pointer' }}
       />
     </g>
   );
@@ -92,6 +95,7 @@ const renderInActiveShape = (props: any) => {
         startAngle={startAngle}
         endAngle={endAngle}
         fill={fill}
+        style={{ cursor: 'pointer' }}
       />
       <Sector
         cx={cx}
@@ -101,6 +105,7 @@ const renderInActiveShape = (props: any) => {
         startAngle={startAngle}
         endAngle={endAngle}
         fill={fill}
+        style={{ cursor: 'pointer' }}
       />
     </g>
   );

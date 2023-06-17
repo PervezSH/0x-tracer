@@ -46,4 +46,11 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
   scrollbar-color: $secondary transparent; /* For Firefox */
 }
 
+g,
+path {
+  :focus {
+    outline: none;
+  }
+}
+
 @import '../node_modules/bootstrap/scss/bootstrap';
