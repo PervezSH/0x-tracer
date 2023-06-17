@@ -1,6 +1,6 @@
 'use client';
 import React, { FC, useState } from 'react';
-import { Sector, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { Sector, PieChart, Pie, Cell } from 'recharts';
 
 import { pieChartData } from '@utils';
 
@@ -119,44 +119,42 @@ const OverviewChart: FC = () => {
   };
 
   return (
-    <ResponsiveContainer width={196} height={196}>
-      <PieChart>
-        <defs>
-          {COLORS.map((color, index) => (
-            <linearGradient
-              key={`colorUv${index}`}
-              id={`colorUv${index}`}
-              x1="0"
-              y1="0"
-              x2="1"
-              y2="1"
-              spreadMethod="reflect"
-            >
-              <stop offset="0" stopColor={color} stopOpacity={0.5} />
-              <stop offset="1" stopColor={color} />
-            </linearGradient>
-          ))}
-        </defs>
-        <Pie
-          activeIndex={activeIndex}
-          activeShape={renderActiveShape}
-          inactiveShape={renderInActiveShape}
-          data={pieChartData}
-          cx="50%"
-          cy="50%"
-          innerRadius={35}
-          outerRadius={85}
-          fill="url(#colorUv)"
-          dataKey="value"
-          paddingAngle={1}
-          onMouseEnter={onPieEnter}
-        >
-          {pieChartData.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={`url(#colorUv${index})`} />
-          ))}
-        </Pie>
-      </PieChart>
-    </ResponsiveContainer>
+    <PieChart width={200} height={200}>
+      <defs>
+        {COLORS.map((color, index) => (
+          <linearGradient
+            key={`colorUv${index}`}
+            id={`colorUv${index}`}
+            x1="0"
+            y1="0"
+            x2="1"
+            y2="1"
+            spreadMethod="reflect"
+          >
+            <stop offset="0" stopColor={color} stopOpacity={0.5} />
+            <stop offset="1" stopColor={color} />
+          </linearGradient>
+        ))}
+      </defs>
+      <Pie
+        activeIndex={activeIndex}
+        activeShape={renderActiveShape}
+        inactiveShape={renderInActiveShape}
+        data={pieChartData}
+        cx="50%"
+        cy="50%"
+        innerRadius={35}
+        outerRadius={85}
+        fill="url(#colorUv)"
+        dataKey="value"
+        paddingAngle={1}
+        onMouseEnter={onPieEnter}
+      >
+        {pieChartData.map((entry, index) => (
+          <Cell key={`cell-${index}`} fill={`url(#colorUv${index})`} />
+        ))}
+      </Pie>
+    </PieChart>
   );
 };
 

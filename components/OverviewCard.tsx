@@ -4,10 +4,7 @@ import { OverviewChart } from '@components';
 
 const OverviewCard = () => {
   return (
-    <div
-      className="card m-0 gap-5 border-0 shadow-lg rounded-4"
-      style={{ padding: '40px', width: 'fit-content' }}
-    >
+    <div className="card m-0 p-4 gap-4 border-0 rounded-5 shadow">
       <div className="card-body p-0 m-0">
         <div className="d-flex justify-content-between">
           <p className="card-text fs-5 fw-semibold p-0 m-0">Overview</p>
@@ -24,8 +21,8 @@ const OverviewCard = () => {
           {`18,966,580`}
         </h4>
       </div>
-      <div className="d-flex justify-content-center align-items-center px-4">
-        <div className="d-flex position-relative" style={{ width: '196px' }}>
+      <div className="d-flex justify-content-center align-items-center px-4 px-lg-5">
+        <div className="d-flex position-relative">
           <OverviewChart />
           <div
             className="m-3 me-0 rounded-4 overflow-hidden bg-primary position-absolute"

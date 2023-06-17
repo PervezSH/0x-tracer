@@ -1,6 +1,13 @@
 import { FC } from 'react';
 
-import { Profile, Search, Hero, NetworkLists, OverviewCard } from '@components';
+import {
+  Profile,
+  Search,
+  Hero,
+  NetworkLists,
+  OverviewCard,
+  PerformanceCard,
+} from '@components';
 
 interface PortfolioPageProps {
   address: string;
@@ -13,8 +20,9 @@ const PortfolioPage: FC<PortfolioPageProps> = ({ address }) => {
       <Search />
       <Profile address={address} />
       <NetworkLists />
-      <div className="d-flex flex-column flex-lg-row align-items-center justify-content-between">
+      <div className="d-flex flex-column gap-4 flex-lg-row align-items-center justify-content-between">
         <OverviewCard />
+        <PerformanceCard />
       </div>
     </main>
   );
