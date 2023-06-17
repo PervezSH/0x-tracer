@@ -317,3 +317,39 @@ export const pieChartData = [
   { id: 3, symbol: 'USDC', value: 185662 },
   { id: 4, symbol: 'OTHERS', value: 113918 },
 ];
+
+export const assetsEthereum = [
+  {
+    name: 'Ethereum',
+    symbol: 'ETH',
+    price: 1729.85,
+    holdings: 1,
+    value: 1729.85,
+    percentage: 95.1,
+    change24h: 0.1,
+    logoPath:
+      'https://assets.coingecko.com/coins/images/279/small/ethereum.png?1595348880',
+  },
+  {
+    name: 'Binance Smart Chain',
+    symbol: 'BNB',
+    price: 243.72,
+    holdings: 10,
+    value: 2437.2,
+    percentage: 4.1,
+    change24h: 0.2,
+    logoPath:
+      'https://assets.coingecko.com/coins/images/825/small/bnb-icon2_2x.png?1644979850',
+  },
+  {
+    name: 'Tether',
+    symbol: 'USDT',
+    price: 0.99,
+    holdings: 10,
+    value: 9.9,
+    percentage: 1.8,
+    change24h: -0.06,
+    logoPath:
+      'https://assets.coingecko.com/coins/images/325/small/Tether.png?1668148663',
+  },
+];

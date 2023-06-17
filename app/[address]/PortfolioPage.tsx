@@ -7,6 +7,7 @@ import {
   NetworkLists,
   OverviewCard,
   PerformanceCard,
+  AssetsCard,
 } from '@components';
 
 interface PortfolioPageProps {
@@ -24,6 +25,7 @@ const PortfolioPage: FC<PortfolioPageProps> = ({ address }) => {
         <OverviewCard />
         <PerformanceCard />
       </div>
+      <AssetsCard />
     </main>
   );
 };

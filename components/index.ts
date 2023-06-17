@@ -8,3 +8,4 @@ export { default as NetworkLists } from './NetworkLists';
 export { default as OverviewCard } from './OverviewCard';
 export { default as OverviewChart } from './OverviewChart';
 export { default as PerformanceCard } from './PerformanceCard';
+export { default as AssetsCard } from './AssetsCard';
