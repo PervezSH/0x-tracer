@@ -11,37 +11,37 @@ const AssetsCard: FC = () => {
         <div className="d-flex mt-2 gap-1 w-100">
           <h6
             className="fw-bold text-secondary m-0 p-0 w-100"
-            style={{ fontSize: '14px', minWidth: '160px', maxWidth: '300px' }}
+            style={{ fontSize: '12px', minWidth: '160px', maxWidth: '300px' }}
           >
             Name
           </h6>
           <h6
             className="fw-bold text-secondary m-0 p-0 text-end w-100"
-            style={{ fontSize: '14px', minWidth: '80px', maxWidth: '200px' }}
+            style={{ fontSize: '12px', minWidth: '80px', maxWidth: '200px' }}
           >
             Price
           </h6>
           <h6
             className="fw-bold text-secondary m-0 p-0 text-end w-100"
-            style={{ fontSize: '14px', minWidth: '80px', maxWidth: '200px' }}
+            style={{ fontSize: '12px', minWidth: '80px', maxWidth: '200px' }}
           >
             Holdings
           </h6>
           <h6
             className="fw-bold text-secondary m-0 p-0 text-end w-100"
-            style={{ fontSize: '14px', minWidth: '80px', maxWidth: '200px' }}
+            style={{ fontSize: '12px', minWidth: '80px', maxWidth: '200px' }}
           >
             Value
           </h6>
           <h6
             className="fw-bold text-secondary m-0 p-0 text-end w-100"
-            style={{ fontSize: '14px', minWidth: '80px', maxWidth: '200px' }}
+            style={{ fontSize: '12px', minWidth: '80px', maxWidth: '200px' }}
           >
             Percentage
           </h6>
           <h6
             className="fw-bold text-secondary m-0 p-0 text-end w-100"
-            style={{ fontSize: '14px', minWidth: '40px', maxWidth: '100px' }}
+            style={{ fontSize: '12px', minWidth: '56px', maxWidth: '100px' }}
           >
             24h
           </h6>
@@ -62,26 +62,37 @@ const AssetsCard: FC = () => {
                 width={24}
                 height={24}
               />
-              <p className="text-primary m-0 p-0 text-truncate">{asset.name}</p>
-              <span className="text-secondary" style={{ fontSize: '12px' }}>
+              <p
+                className="fw-semibold text-primary m-0 p-0 text-truncate"
+                style={{ fontSize: '14px' }}
+              >
+                {asset.name}
+              </p>
+              <span
+                className="fw-semibold text-secondary"
+                style={{ fontSize: '12px' }}
+              >
                 {asset.symbol}
               </span>
             </div>
             <p
-              className="text-primary m-0 p-0 text-end w-100"
-              style={{ minWidth: '80px', maxWidth: '200px' }}
+              className="fw-semibold text-primary m-0 p-0 text-end w-100 text-truncate"
+              style={{ fontSize: '14px', minWidth: '80px', maxWidth: '200px' }}
             >
               {formatCurrencyValue(asset.price, 2)}
             </p>
             <p
-              className="text-primary m-0 p-0 text-end w-100"
-              style={{ minWidth: '80px', maxWidth: '200px' }}
+              className="fw-semibold text-primary m-0 p-0 text-end w-100 text-truncate"
+              style={{ fontSize: '14px', minWidth: '80px', maxWidth: '200px' }}
             >
               {formatCurrencyValue(asset.holdings, 2, false, '')}
+              <span className="text-primary ms-1" style={{ fontSize: '12px' }}>
+                {asset.symbol}
+              </span>
             </p>
             <p
-              className="text-primary m-0 p-0 text-end w-100"
-              style={{ minWidth: '80px', maxWidth: '200px' }}
+              className="fw-semibold text-primary m-0 p-0 text-end w-100 text-truncate"
+              style={{ fontSize: '14px', minWidth: '80px', maxWidth: '200px' }}
             >
               {formatCurrencyValue(asset.value, 2)}
             </p>
@@ -89,7 +100,10 @@ const AssetsCard: FC = () => {
               className="d-flex w-100 justify-content-end position-relative"
               style={{ minWidth: '80px', maxWidth: '200px' }}
             >
-              <p className="text-primary m-0 p-0 text-end z-1">
+              <p
+                className="fw-semibold text-primary m-0 p-0 text-end z-1"
+                style={{ fontSize: '14px' }}
+              >
                 {`${asset.percentage}%`}
               </p>
               <div
@@ -98,10 +112,10 @@ const AssetsCard: FC = () => {
               ></div>
             </div>
             <p
-              className={`m-0 p-0 text-end w-100 ${
+              className={`fw-semibold m-0 p-0 text-end w-100 ${
                 asset.change24h > 0 ? 'text-success' : 'text-danger'
               }`}
-              style={{ minWidth: '40px', maxWidth: '100px' }}
+              style={{ fontSize: '14px', minWidth: '56px', maxWidth: '100px' }}
             >
               {`${asset.change24h}%`}
             </p>
