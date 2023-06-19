@@ -23,12 +23,36 @@ const getEns = cache(async (address: string) => {
   }
 });
 
+const getFirstTransfer = cache(async (address: string) => {
+  try {
+    const res = await fetch(
+      `https://api.etherscan.io/api?module=account&action=tokentx&address=${address}&page=1&offset=1&startblock=0&sort=asc&apikey=${process.env.ETHERSCAN_API_KEY}}`
+    );
+    const data = await res.json();
+    const blockNumber = data.result[0].blockNumber;
+    const timestamp = data.result[0].timeStamp;
+    const currentDate = new Date();
+    const timestampDate = new Date(timestamp * 1000);
+    const timeDiff = currentDate.getTime() - timestampDate.getTime();
+    const daysAgo = Math.floor(timeDiff / (1000 * 3600 * 24));
+    return {
+      blockNumber,
+      daysAgo,
+    };
+  } catch (err) {
+    console.error(err);
+    return null;
+  }
+});
+
 interface ProfileProps {
   address: string;
 }
 
 const Profile: FC<ProfileProps> = async ({ address }) => {
-  const ens = await getEns(address);
+  const ensData = getEns(address);
+  const firstTransferData = getFirstTransfer(address);
+  const [ens, firstTransfer] = await Promise.all([ensData, firstTransferData]);
 
   return (
     <div className="d-flex flex-column flex-lg-row  gap-3 mt-4 align-items-center">
@@ -60,7 +84,7 @@ const Profile: FC<ProfileProps> = async ({ address }) => {
               width={16}
               height={16}
             />
-            {`156 days`}
+            {`${firstTransfer ? firstTransfer.daysAgo : '0'} days`}
           </span>
         </div>
       </section>
