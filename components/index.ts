@@ -9,3 +9,5 @@ export { default as OverviewCard } from './OverviewCard';
 export { default as OverviewChart } from './OverviewChart';
 export { default as PerformanceCard } from './PerformanceCard';
 export { default as AssetsCard } from './AssetsCard';
+export { default as EnsAvatar } from './EnsAvatar';
+export { default as EnsName } from './EnsName';

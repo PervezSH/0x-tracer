@@ -3,6 +3,7 @@ import { Open_Sans } from 'next/font/google';
 
 import '@styles/global.scss';
 import { Navbar } from '@components';
+import { JsonRpcContextProvider } from '@contexts';
 
 const openSans = Open_Sans({ subsets: ['latin'] });
 
@@ -20,7 +21,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={openSans.className}>
         <Navbar />
-        <div className="container">{children}</div>
+        <div className="container">
+          <JsonRpcContextProvider>{children}</JsonRpcContextProvider>
+        </div>
       </body>
     </html>
   );
