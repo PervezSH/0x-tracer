@@ -1,4 +1,16 @@
-export const chainIds = [1, 137, 56, 43114, 250, 10, 42161, 324];
+export const chainIds = [1, 137, 56, 43114, 250, 10, 42161];
+
+export const ankrBlockchainToId: {
+  [blockchain: string]: number;
+} = {
+  eth: 1,
+  polygon: 137,
+  bsc: 56,
+  avalanche: 43114,
+  fantom: 250,
+  optimism: 10,
+  arbitrum: 42161,
+};
 
 export interface IChainDetail {
   name: string;
