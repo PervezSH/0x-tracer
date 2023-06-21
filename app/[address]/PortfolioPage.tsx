@@ -10,28 +10,13 @@ import {
   AssetsCard,
 } from '@components';
 import { ankrBlockchainToId } from '@utils';
-
-interface ITokenBalanceInfo {
-  name: string;
-  symbol: string;
-  address: string | 'NATIVE';
-  price: number;
-  holdings: number;
-  value: number;
-  percentage: number;
-  change24h: number | null;
-  logoPath: string;
-}
-
-type IBlockchainBalances = {
-  [chainId: number]: { totalValue: number; tokenBalances: ITokenBalanceInfo[] };
-};
+import type { ITokenBalanceInfo, BlockchainBalancesType } from '@types';
 
 const getAddressBalances = async (
   address: string
 ): Promise<{
   totalValue: number;
-  blockchainBalances: IBlockchainBalances;
+  blockchainBalances: BlockchainBalancesType;
 }> => {
   try {
     const options = {
@@ -59,8 +44,8 @@ const getAddressBalances = async (
     if (!data) throw new Error('No data returned from Ankr API');
 
     const totalValue = data.result.totalBalanceUsd as number;
-    const blockchainBalances: IBlockchainBalances = data.result.assets.reduce(
-      (acc: IBlockchainBalances, asset: any) => {
+    const blockchainBalances: BlockchainBalancesType =
+      data.result.assets.reduce((acc: BlockchainBalancesType, asset: any) => {
         const chainId = ankrBlockchainToId[asset.blockchain];
         if (!acc[chainId]) {
           acc[chainId] = {
@@ -84,9 +69,7 @@ const getAddressBalances = async (
           (a: ITokenBalanceInfo, b: ITokenBalanceInfo) => b.value - a.value
         );
         return acc;
-      },
-      {}
-    );
+      }, {});
     for (let chainId in blockchainBalances) {
       blockchainBalances[chainId].tokenBalances = blockchainBalances[
         chainId
@@ -114,14 +97,36 @@ interface PortfolioPageProps {
 }
 
 const PortfolioPage: FC<PortfolioPageProps> = async ({ address }) => {
-  const balance = await getAddressBalances(address);
+  const balances = await getAddressBalances(address);
+
+  const chainBalancePercentages = Object.keys(
+    balances.blockchainBalances
+  ).reduce(
+    (
+      accumulator: {
+        [chainId: number]: number;
+      },
+      chainId
+    ) => {
+      const percentage =
+        (balances.blockchainBalances[Number(chainId)].totalValue /
+          balances.totalValue) *
+        100;
+      accumulator[Number(chainId)] = percentage;
+      return accumulator;
+    },
+    {}
+  );
 
   return (
     <main className="d-flex flex-column mt-5 mb-3 gap-3 ">
       <Hero />
       <Search />
       <Profile address={address} />
-      <NetworkLists />
+      <NetworkLists
+        chainBalancePercentages={chainBalancePercentages}
+        balances={balances}
+      />
       <div className="d-flex flex-column gap-4 flex-lg-row align-items-center justify-content-between">
         <OverviewCard />
         <PerformanceCard />

@@ -2,13 +2,28 @@
 import { FC } from 'react';
 
 import { useHorizontalScroll } from '@hooks';
-import { chainIds } from '@utils';
 import { NetworkCard } from '@components';
+import type { BlockchainBalancesType } from '@types';
 
-const NetworkLists: FC = () => {
+interface INetworkListsProps {
+  chainBalancePercentages: { [chainId: number]: number };
+  balances: {
+    totalValue: number;
+    blockchainBalances: BlockchainBalancesType;
+  };
+}
+
+const NetworkLists: FC<INetworkListsProps> = ({
+  chainBalancePercentages,
+  balances,
+}) => {
   const scrollRef = useHorizontalScroll();
 
-  const selectedChainId = chainIds[0];
+  const sortedEntries = Object.entries(chainBalancePercentages).sort(
+    (a, b) => b[1] - a[1]
+  );
+
+  const selectedChainId = sortedEntries.length && sortedEntries[0][0];
 
   return (
     <div
@@ -16,11 +31,13 @@ const NetworkLists: FC = () => {
       className="d-flex py-5 gap-3 overflow-x-auto scrollbar-none"
       style={{ margin: '-18px 0px' }}
     >
-      {chainIds.map((chainId) => (
+      {sortedEntries.map((entries) => (
         <NetworkCard
-          key={chainId}
-          chainId={chainId}
-          isSelected={selectedChainId === chainId}
+          key={entries[0]}
+          chainId={Number(entries[0])}
+          isSelected={selectedChainId === entries[0]}
+          value={balances.blockchainBalances[Number(entries[0])].totalValue}
+          percentage={chainBalancePercentages[Number(entries[0])]}
         />
       ))}
     </div>

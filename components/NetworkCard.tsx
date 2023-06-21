@@ -1,17 +1,21 @@
 import { FC } from 'react';
 import Image from 'next/image';
 
-import { chainDetails, concisedUsdValue24h } from '@utils';
+import { chainDetails, concisedUsdValue24h, formatCurrencyValue } from '@utils';
 import { NetCurve } from '@components';
 
 interface INetworkCardProps {
   chainId: number;
   isSelected?: boolean;
+  value: number;
+  percentage: number;
 }
 
 const NetworkCard: FC<INetworkCardProps> = ({
   chainId,
   isSelected = false,
+  value = 0,
+  percentage = 0,
 }) => {
   return (
     <div
@@ -52,12 +56,14 @@ const NetworkCard: FC<INetworkCardProps> = ({
                 isSelected ? 'text-primary' : 'text-card-color'
               }`}
               style={{ maxWidth: '92px' }}
-            >{`$18,966,580`}</h6>
+            >
+              {formatCurrencyValue(value)}
+            </h6>
             <p
               className="text-secondary fw-semibold m-0"
               style={{ fontSize: '12px' }}
             >
-              {`88%`}
+              {`${percentage.toFixed()}%`}
             </p>
           </div>
           <div
