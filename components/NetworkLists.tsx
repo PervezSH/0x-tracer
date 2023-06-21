@@ -1,8 +1,9 @@
 'use client';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 
 import { useHorizontalScroll } from '@hooks';
 import { NetworkCard } from '@components';
+import { useActiveChainIdContext } from '@contexts';
 import type { BlockchainBalancesType } from '@types';
 
 interface INetworkListsProps {
@@ -18,12 +19,21 @@ const NetworkLists: FC<INetworkListsProps> = ({
   balances,
 }) => {
   const scrollRef = useHorizontalScroll();
+  const { activeChainId, dispatch } = useActiveChainIdContext();
 
   const sortedEntries = Object.entries(chainBalancePercentages).sort(
     (a, b) => b[1] - a[1]
   );
 
-  const selectedChainId = sortedEntries.length && sortedEntries[0][0];
+  useEffect(() => {
+    console.log('Yoo');
+    if (sortedEntries.length > 0)
+      dispatch({
+        type: 'SET_ACTIVE_CHAIN_ID',
+        payload: Number(sortedEntries[0][0]),
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div
@@ -35,9 +45,15 @@ const NetworkLists: FC<INetworkListsProps> = ({
         <NetworkCard
           key={entries[0]}
           chainId={Number(entries[0])}
-          isSelected={selectedChainId === entries[0]}
+          isSelected={activeChainId === Number(entries[0])}
           value={balances.blockchainBalances[Number(entries[0])].totalValue}
           percentage={chainBalancePercentages[Number(entries[0])]}
+          onClick={() =>
+            dispatch({
+              type: 'SET_ACTIVE_CHAIN_ID',
+              payload: Number(entries[0]),
+            })
+          }
         />
       ))}
     </div>

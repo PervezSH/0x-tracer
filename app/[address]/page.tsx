@@ -3,6 +3,7 @@ import { isAddress } from 'ethers';
 import { redirect } from 'next/navigation';
 
 import PortfolioPage from './PortfolioPage';
+import { ActiveChainIdContextProvider } from '@contexts';
 
 interface Props {
   params: { address: string };
@@ -10,7 +11,11 @@ interface Props {
 
 const Page: FC<Props> = ({ params }) => {
   if (!isAddress(params.address)) redirect('/');
-  return <PortfolioPage address={params.address} />;
+  return (
+    <ActiveChainIdContextProvider>
+      <PortfolioPage address={params.address} />
+    </ActiveChainIdContextProvider>
+  );
 };
 
 export default Page;

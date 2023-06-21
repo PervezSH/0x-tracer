@@ -9,6 +9,7 @@ interface INetworkCardProps {
   isSelected?: boolean;
   value: number;
   percentage: number;
+  onClick: () => void;
 }
 
 const NetworkCard: FC<INetworkCardProps> = ({
@@ -16,6 +17,7 @@ const NetworkCard: FC<INetworkCardProps> = ({
   isSelected = false,
   value = 0,
   percentage = 0,
+  onClick,
 }) => {
   return (
     <div
@@ -25,6 +27,7 @@ const NetworkCard: FC<INetworkCardProps> = ({
           : 'bg-primary text-card-color on-hover-shadow'
       } `}
       style={{ maxWidth: '222px', cursor: 'pointer' }}
+      onClick={() => onClick()}
     >
       <div className="d-flex rounded-4">
         <div
