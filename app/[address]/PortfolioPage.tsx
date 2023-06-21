@@ -128,7 +128,7 @@ const PortfolioPage: FC<PortfolioPageProps> = async ({ address }) => {
         balances={balances}
       />
       <div className="d-flex flex-column gap-4 flex-lg-row align-items-center justify-content-between">
-        <OverviewCard />
+        <OverviewCard blockchainBalances={balances.blockchainBalances} />
         <PerformanceCard />
       </div>
       <AssetsCard />

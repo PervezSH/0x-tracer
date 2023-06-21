@@ -2,8 +2,6 @@
 import React, { FC, useState } from 'react';
 import { Sector, PieChart, Pie, Cell } from 'recharts';
 
-import { pieChartData } from '@utils';
-
 const COLORS = ['#F37E64', '#DAE17E', '#78CBBA', '#7492FC', '#B8ABEF'];
 
 const renderActiveShape = (props: any) => {
@@ -111,7 +109,13 @@ const renderInActiveShape = (props: any) => {
   );
 };
 
-const OverviewChart: FC = () => {
+const OverviewChart: FC<{
+  pieChartData: {
+    id: number;
+    symbol: string;
+    value: number;
+  }[];
+}> = ({ pieChartData }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const onPieEnter = (_: any, index: number) => {

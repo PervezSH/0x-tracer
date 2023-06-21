@@ -1,8 +1,75 @@
-import React from 'react';
+'use client';
+import React, { FC, useEffect, useState } from 'react';
 import Image from 'next/image';
 import { OverviewChart } from '@components';
 
-const OverviewCard = () => {
+import { useActiveChainIdContext } from '@contexts';
+import { chainDetails, formatCurrencyValue } from '@utils';
+import type { BlockchainBalancesType, ITokenBalanceInfo } from '@types';
+
+interface IOverviewCardProps {
+  blockchainBalances: BlockchainBalancesType;
+}
+
+const OverviewCard: FC<IOverviewCardProps> = ({ blockchainBalances }) => {
+  const { activeChainId } = useActiveChainIdContext();
+  const [pieChartData, setPieChartData] = useState<
+    {
+      id: number;
+      symbol: string;
+      value: number;
+    }[]
+  >([]);
+
+  useEffect(() => {
+    const transformData = (tokenBalances: ITokenBalanceInfo[]) => {
+      const processedData: {
+        id: number;
+        symbol: string;
+        value: number;
+      }[] = [];
+      const totalValue = blockchainBalances[activeChainId].totalValue;
+
+      if (tokenBalances.length < 5) {
+        tokenBalances.forEach((token, index) => {
+          processedData.push({
+            id: index,
+            symbol: token.symbol,
+            value: (token.value / totalValue) * 100,
+          });
+        });
+        return processedData;
+      }
+
+      let remainingPercentage = 100;
+      const topTokens = tokenBalances.slice(0, 4);
+      topTokens.forEach((token, index) => {
+        processedData.push({
+          id: index,
+          symbol: token.symbol,
+          value: (token.value / totalValue) * 100,
+        });
+
+        remainingPercentage -= (token.value / totalValue) * 100;
+      });
+      processedData.push({
+        id: 4,
+        symbol: 'OTHERS',
+        value: remainingPercentage,
+      });
+      return processedData;
+    };
+    if (
+      blockchainBalances[activeChainId] &&
+      blockchainBalances[activeChainId].tokenBalances.length > 0
+    ) {
+      setPieChartData(
+        transformData(blockchainBalances[activeChainId].tokenBalances)
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeChainId]);
+
   return (
     <div className="card m-0 p-4 gap-4 border-0 rounded-5 shadow">
       <div className="card-body p-0 m-0">
@@ -18,12 +85,18 @@ const OverviewCard = () => {
         </div>
         <h4 className="card-title m-0 pt-1 fw-bold">
           <span className="fs-5">$</span>
-          {`18,966,580`}
+          {blockchainBalances[activeChainId] &&
+            formatCurrencyValue(
+              blockchainBalances[activeChainId].totalValue,
+              2,
+              false,
+              ''
+            )}
         </h4>
       </div>
       <div className="d-flex justify-content-center align-items-center px-4 px-lg-5">
         <div className="d-flex position-relative">
-          <OverviewChart />
+          <OverviewChart pieChartData={pieChartData} />
           <div
             className="m-3 me-0 rounded-4 overflow-hidden bg-primary position-absolute"
             style={{
@@ -34,7 +107,7 @@ const OverviewCard = () => {
             }}
           >
             <Image
-              src={'assets/logos/ethereum.svg'}
+              src={chainDetails[activeChainId].logoPath}
               alt={'netowrk-logo'}
               width={40}
               height={40}

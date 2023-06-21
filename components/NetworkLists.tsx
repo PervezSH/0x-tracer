@@ -26,7 +26,6 @@ const NetworkLists: FC<INetworkListsProps> = ({
   );
 
   useEffect(() => {
-    console.log('Yoo');
     if (sortedEntries.length > 0)
       dispatch({
         type: 'SET_ACTIVE_CHAIN_ID',
