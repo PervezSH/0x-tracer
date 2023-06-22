@@ -1,5 +1,6 @@
 'use client';
 import { FC } from 'react';
+import Image from 'next/image';
 
 import { formatCurrencyValue } from '@utils';
 import type { BlockchainBalancesType } from '@types';
@@ -64,13 +65,13 @@ const AssetsCard: FC<{
                     className="d-flex w-100 align-items-center gap-2 text-nowrap"
                     style={{ minWidth: '160px', maxWidth: '300px' }}
                   >
-                    {/* <Image
-                    className="object-fit-cover"
-                    src={token.logoPath}
-                    alt={`${token.name}-logo`}
-                    width={24}
-                    height={24}
-                  /> */}
+                    <Image
+                      className="object-fit-cover"
+                      src={token.logoPath}
+                      alt={`${token.name}-logo`}
+                      width={24}
+                      height={24}
+                    />
                     <p
                       className="fw-semibold text-primary m-0 p-0 text-truncate"
                       style={{ fontSize: '14px' }}
@@ -145,7 +146,7 @@ const AssetsCard: FC<{
                       maxWidth: '100px',
                     }}
                   >
-                    {`${token.change24h}%`}
+                    {`${token.change24h.toFixed(2)}%`}
                   </p>
                 </div>
               );

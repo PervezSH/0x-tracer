@@ -6,8 +6,9 @@ export interface ITokenBalanceInfo {
   holdings: number;
   value: number;
   percentage: number;
-  change24h: number | null;
+  change24h: number;
   logoPath: string;
+  sparkline: number[];
 }
 
 interface ITokenMarketData {

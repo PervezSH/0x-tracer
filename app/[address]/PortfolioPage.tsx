@@ -104,32 +104,20 @@ const getAddressBalances = async (
           };
         }
         if (asset.balanceUsd <= 0.0099) return acc;
-        acc[chainId].totalValue += parseFloat(asset.balanceUsd);
         acc[chainId].tokenBalances.push({
           name: asset.tokenName,
           symbol: asset.tokenSymbol,
           address: asset.contractAddress ? asset.contractAddress : 'NATIVE',
           price: asset.tokenPrice,
           holdings: asset.balance,
-          value: asset.balanceUsd,
+          value: 0,
           percentage: 0,
-          change24h: null,
-          logoPath: asset.thumbnail,
+          change24h: 0,
+          logoPath: '',
+          sparkline: [],
         });
-        acc[chainId].tokenBalances.sort(
-          (a: ITokenBalanceInfo, b: ITokenBalanceInfo) => b.value - a.value
-        );
         return acc;
       }, {});
-    for (let chainId in blockchainBalances) {
-      blockchainBalances[chainId].tokenBalances = blockchainBalances[
-        chainId
-      ].tokenBalances.map((tokenBalance) => ({
-        ...tokenBalance,
-        percentage:
-          (tokenBalance.value / blockchainBalances[chainId].totalValue) * 100,
-      }));
-    }
     return {
       totalValue,
       blockchainBalances,
@@ -194,6 +182,54 @@ const getCoinGeckoTokensMarketData = async (
   }
 };
 
+const updateTokenBalancesWithMarketData = async (
+  blockchainBalances: BlockchainBalancesType,
+  coinGeckoIds: CoinGeckoTokenIdsType,
+  tokensMarketData: ITokensMartketData
+) => {
+  for (let chainId in blockchainBalances) {
+    let totalValue = 0;
+    blockchainBalances[chainId].tokenBalances = blockchainBalances[
+      chainId
+    ].tokenBalances.map((token) => {
+      const id = coinGeckoIds[`${chainId}-${token.address}`];
+      if (!tokensMarketData[id])
+        return {
+          ...token,
+        };
+      const value = token.holdings * tokensMarketData[id].price;
+      totalValue += value;
+      return {
+        ...token,
+        price: tokensMarketData[id].price,
+        logoPath: tokensMarketData[id].logoPath,
+        change24h: tokensMarketData[id].change24h
+          ? tokensMarketData[id].change24h
+          : 0,
+        sparkline: tokensMarketData[id].sparkline,
+        value: value,
+      };
+    });
+    blockchainBalances[chainId].totalValue = totalValue;
+  }
+  for (let chainId in blockchainBalances) {
+    blockchainBalances[chainId].tokenBalances = blockchainBalances[
+      chainId
+    ].tokenBalances.map((tokenBalance) => ({
+      ...tokenBalance,
+      percentage:
+        (tokenBalance.value / blockchainBalances[chainId].totalValue) * 100,
+    }));
+  }
+  for (const chainId in blockchainBalances) {
+    if (blockchainBalances[chainId]) {
+      blockchainBalances[chainId].tokenBalances.sort(
+        (a, b) => b.percentage - a.percentage
+      );
+    }
+  }
+};
+
 interface PortfolioPageProps {
   address: string;
 }
@@ -208,6 +244,11 @@ const PortfolioPage: FC<PortfolioPageProps> = async ({ address }) => {
   const tokensMarketData = await getCoinGeckoTokensMarketData(
     coinGeckoIds,
     balances.blockchainBalances
+  );
+  await updateTokenBalancesWithMarketData(
+    balances.blockchainBalances,
+    coinGeckoIds,
+    tokensMarketData
   );
 
   const chainBalancePercentages = Object.keys(
