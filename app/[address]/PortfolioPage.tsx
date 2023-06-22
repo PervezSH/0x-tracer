@@ -131,7 +131,7 @@ const PortfolioPage: FC<PortfolioPageProps> = async ({ address }) => {
         <OverviewCard blockchainBalances={balances.blockchainBalances} />
         <PerformanceCard />
       </div>
-      <AssetsCard />
+      <AssetsCard blockchainBalances={balances.blockchainBalances} />
     </main>
   );
 };
