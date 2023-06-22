@@ -10,6 +10,7 @@ export const ankrBlockchainToId: {
   fantom: 250,
   optimism: 10,
   arbitrum: 42161,
+  polygon_zkevm: 1101,
 };
 
 export interface IChainDetail {
@@ -69,5 +70,11 @@ export const chainDetails: {
     symbol: 'ETH',
     logoPath: 'assets/logos/zksync.svg',
     themeBg: 'rgba(140, 141, 252, 0.25)',
+  },
+  1101: {
+    name: 'Polygon ZK-EVM',
+    symbol: 'ETH',
+    logoPath: 'assets/logos/polygon.svg',
+    themeBg: 'rgba(121, 80, 221, 0.25)',
   },
 };
