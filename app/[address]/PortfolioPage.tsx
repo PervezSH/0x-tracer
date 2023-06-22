@@ -53,6 +53,7 @@ const getAddressBalances = async (
             tokenBalances: [],
           };
         }
+        if (asset.balanceUsd <= 0.0099) return acc;
         acc[chainId].totalValue += parseFloat(asset.balanceUsd);
         acc[chainId].tokenBalances.push({
           name: asset.tokenName,

@@ -55,7 +55,6 @@ const AssetsCard: FC<{
         {blockchainBalances[activeChainId] &&
           blockchainBalances[activeChainId].tokenBalances.map(
             (token, index) => {
-              if (token.value <= 0.0099) return null;
               return (
                 <div
                   key={`${index}-${token.name}`}
