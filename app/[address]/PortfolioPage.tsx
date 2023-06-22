@@ -9,8 +9,57 @@ import {
   PerformanceCard,
   AssetsCard,
 } from '@components';
-import { ankrBlockchainToId } from '@utils';
-import type { ITokenBalanceInfo, BlockchainBalancesType } from '@types';
+import {
+  ankrBlockchainToId,
+  coinGeckoPlatformToId,
+  coinGeckoPlatforms,
+  coinGeckoNativeIds,
+} from '@utils';
+import type {
+  ITokenBalanceInfo,
+  BlockchainBalancesType,
+  CoinGeckoTokenIdsType,
+  ITokensMartketData,
+} from '@types';
+
+const getTokenCoinGeckcoIds = async (): Promise<CoinGeckoTokenIdsType> => {
+  try {
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+      },
+    };
+    const res = await fetch(
+      `https://api.coingecko.com/api/v3/coins/list?include_platform=true`,
+      options
+    );
+    const data = await res.json();
+    if (!data)
+      throw new Error(
+        'getTokenCoinGeckcoIds: No data returned from CoinGecko API'
+      );
+
+    let tokenIds: CoinGeckoTokenIdsType = {};
+    const allowedPlatforms = new Set(coinGeckoPlatforms);
+    for (let token of data) {
+      for (let platform in token.platforms) {
+        if (allowedPlatforms.has(platform)) {
+          let tokenChainAndAddress = `${coinGeckoPlatformToId[platform]}-${token.platforms[platform]}`;
+          tokenIds[tokenChainAndAddress] = token.id;
+        }
+      }
+    }
+    Object.keys(coinGeckoNativeIds).forEach((chainId) => {
+      const tokenChainAndAddress = `${chainId}-NATIVE`;
+      tokenIds[tokenChainAndAddress] = coinGeckoNativeIds[Number(chainId)];
+    });
+    return tokenIds;
+  } catch (err) {
+    console.error(err);
+    return {};
+  }
+};
 
 const getAddressBalances = async (
   address: string
@@ -41,7 +90,8 @@ const getAddressBalances = async (
       options
     );
     const data = await res.json();
-    if (!data) throw new Error('No data returned from Ankr API');
+    if (!data)
+      throw new Error('getAddressBalances: No data returned from Ankr API');
 
     const totalValue = data.result.totalBalanceUsd as number;
     const blockchainBalances: BlockchainBalancesType =
@@ -93,12 +143,72 @@ const getAddressBalances = async (
   }
 };
 
+const getCoinGeckoTokensMarketData = async (
+  coinGeckoIds: CoinGeckoTokenIdsType,
+  blockchainBalances: BlockchainBalancesType
+): Promise<ITokensMartketData> => {
+  try {
+    let tokenIds: string[] = [];
+    Object.keys(blockchainBalances).forEach((chainId) => {
+      blockchainBalances[Number(chainId)].tokenBalances.forEach((token) => {
+        if (token.address !== 'NATIVE') {
+          if (coinGeckoIds[`${chainId}-${token.address}`])
+            tokenIds.push(coinGeckoIds[`${chainId}-${token.address}`]);
+        } else {
+          tokenIds.push(coinGeckoIds[`${chainId}-NATIVE`]);
+        }
+      });
+    });
+    let tokenIdsSet = new Set(tokenIds);
+    tokenIds = Array.from(tokenIdsSet);
+    const options = {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+      },
+    };
+    const res = await fetch(
+      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${tokenIds.join(
+        ','
+      )}&order=market_cap_desc&per_page=250&page=1&sparkline=true`,
+      options
+    );
+    const data: any[] = await res.json();
+    if (!data)
+      throw new Error(
+        'getCoinGeckoTokenMarketData: No data returned from CoinGecko API'
+      );
+    let tokensMarketData: ITokensMartketData = {};
+    data.forEach((tokenMarketData: any) => {
+      tokensMarketData[tokenMarketData.id] = {
+        price: tokenMarketData.current_price,
+        logoPath: tokenMarketData.image,
+        change24h: tokenMarketData.price_change_percentage_24h,
+        sparkline: tokenMarketData.sparkline_in_7d,
+      };
+    });
+    return tokensMarketData;
+  } catch (err) {
+    console.error(err);
+    return {};
+  }
+};
+
 interface PortfolioPageProps {
   address: string;
 }
 
 const PortfolioPage: FC<PortfolioPageProps> = async ({ address }) => {
-  const balances = await getAddressBalances(address);
+  const coinGeckoIdsPromise = getTokenCoinGeckcoIds();
+  const balancesPromise = getAddressBalances(address);
+  const [coinGeckoIds, balances] = await Promise.all([
+    coinGeckoIdsPromise,
+    balancesPromise,
+  ]);
+  const tokensMarketData = await getCoinGeckoTokensMarketData(
+    coinGeckoIds,
+    balances.blockchainBalances
+  );
 
   const chainBalancePercentages = Object.keys(
     balances.blockchainBalances

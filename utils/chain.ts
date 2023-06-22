@@ -13,6 +13,43 @@ export const ankrBlockchainToId: {
   polygon_zkevm: 1101,
 };
 
+export const coinGeckoPlatforms = [
+  'ethereum',
+  'polygon-pos',
+  'binance-smart-chain',
+  'avalanche',
+  'fantom',
+  'optimistic-ethereum',
+  'arbitrum-one',
+  'polygon-zkevm',
+];
+
+export const coinGeckoNativeIds: {
+  [id: number]: string;
+} = {
+  1: 'ethereum',
+  137: 'matic-network',
+  56: 'binancecoin',
+  43114: 'avalanche-2',
+  250: 'fantom',
+  10: 'ethereum',
+  42161: 'ethereum',
+  1101: 'ethereum',
+};
+
+export const coinGeckoPlatformToId: {
+  [platform: string]: number;
+} = {
+  ethereum: 1,
+  'polygon-pos': 137,
+  'binance-smart-chain': 56,
+  avalanche: 43114,
+  fantom: 250,
+  'optimistic-ethereum': 10,
+  'arbitrum-one': 42161,
+  'polygon-zkevm': 1101,
+};
+
 export interface IChainDetail {
   name: string;
   symbol: string;

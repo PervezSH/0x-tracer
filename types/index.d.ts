@@ -10,6 +10,21 @@ export interface ITokenBalanceInfo {
   logoPath: string;
 }
 
+interface ITokenMarketData {
+  price: number;
+  logoPath: string;
+  change24h: number;
+  sparkline: number[];
+}
+
+export interface ITokensMartketData {
+  [id: string]: ITokenMarketData;
+}
+
 export type BlockchainBalancesType = {
   [chainId: number]: { totalValue: number; tokenBalances: ITokenBalanceInfo[] };
+};
+
+export type CoinGeckoTokenIdsType = {
+  [tokenChainAndAddress: string]: string;
 };
