@@ -9,16 +9,13 @@ import type { BlockchainBalancesType, SparklineSumsType } from '@types';
 interface INetworkListsProps {
   chainBalancePercentages: { [chainId: number]: number };
   chainSparklineSums: SparklineSumsType;
-  balances: {
-    totalValue: number;
-    blockchainBalances: BlockchainBalancesType;
-  };
+  blockchainBalances: BlockchainBalancesType;
 }
 
 const NetworkLists: FC<INetworkListsProps> = ({
   chainBalancePercentages,
   chainSparklineSums,
-  balances,
+  blockchainBalances,
 }) => {
   const scrollRef = useHorizontalScroll();
   const { activeChainId, dispatch } = useActiveChainIdContext();
@@ -47,7 +44,7 @@ const NetworkLists: FC<INetworkListsProps> = ({
           key={entries[0]}
           chainId={Number(entries[0])}
           isSelected={activeChainId === Number(entries[0])}
-          value={balances.blockchainBalances[Number(entries[0])].totalValue}
+          value={blockchainBalances[Number(entries[0])].totalValue}
           percentage={chainBalancePercentages[Number(entries[0])]}
           sparkline={chainSparklineSums[Number(entries[0])]}
           onClick={() =>

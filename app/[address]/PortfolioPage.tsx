@@ -29,6 +29,7 @@ const getTokenCoinGeckcoIds = async (): Promise<CoinGeckoTokenIdsType> => {
       headers: {
         accept: 'application/json',
       },
+      next: { revalidate: 86400 },
     };
     const res = await fetch(
       `https://api.coingecko.com/api/v3/coins/list?include_platform=true`,
@@ -84,6 +85,7 @@ const getAddressBalances = async (
         },
         id: 1,
       }),
+      next: { revalidate: 60 },
     };
     const res = await fetch(
       `https://rpc.ankr.com/multichain/${process.env.ANKR_ENDPOINT_KEY}/?ankr_getAccountBalance=`,
@@ -155,6 +157,7 @@ const getCoinGeckoTokensMarketData = async (
       headers: {
         accept: 'application/json',
       },
+      next: { revalidate: 60 },
     };
     const res = await fetch(
       `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${tokenIds.join(
@@ -298,6 +301,15 @@ const PortfolioPage: FC<PortfolioPageProps> = async ({ address }) => {
     tokensMarketData
   );
 
+  const chainBalanceSparklines = calculateSparklineSums(
+    balances.blockchainBalances
+  );
+
+  const totalValue =
+    chainBalanceSparklines.sparkline[
+      chainBalanceSparklines.sparkline.length - 1
+    ].value;
+
   const chainBalancePercentages = Object.keys(
     balances.blockchainBalances
   ).reduce(
@@ -308,17 +320,12 @@ const PortfolioPage: FC<PortfolioPageProps> = async ({ address }) => {
       chainId
     ) => {
       const percentage =
-        (balances.blockchainBalances[Number(chainId)].totalValue /
-          balances.totalValue) *
+        (balances.blockchainBalances[Number(chainId)].totalValue / totalValue) *
         100;
       accumulator[Number(chainId)] = percentage;
       return accumulator;
     },
     {}
-  );
-
-  const chainBalanceSparklines = calculateSparklineSums(
-    balances.blockchainBalances
   );
 
   return (
@@ -329,7 +336,7 @@ const PortfolioPage: FC<PortfolioPageProps> = async ({ address }) => {
       <NetworkLists
         chainBalancePercentages={chainBalancePercentages}
         chainSparklineSums={chainBalanceSparklines}
-        balances={balances}
+        blockchainBalances={balances.blockchainBalances}
       />
       <div className="d-flex flex-column gap-4 flex-lg-row align-items-center justify-content-between">
         <OverviewCard blockchainBalances={balances.blockchainBalances} />
