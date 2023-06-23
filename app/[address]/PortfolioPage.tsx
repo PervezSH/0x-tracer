@@ -16,10 +16,10 @@ import {
   coinGeckoNativeIds,
 } from '@utils';
 import type {
-  ITokenBalanceInfo,
   BlockchainBalancesType,
   CoinGeckoTokenIdsType,
   ITokensMartketData,
+  SparklineSumsType,
 } from '@types';
 
 const getTokenCoinGeckcoIds = async (): Promise<CoinGeckoTokenIdsType> => {
@@ -114,6 +114,7 @@ const getAddressBalances = async (
           percentage: 0,
           change24h: 0,
           logoPath: '',
+          price7d: 0,
           sparkline: [],
         });
         return acc;
@@ -158,7 +159,7 @@ const getCoinGeckoTokensMarketData = async (
     const res = await fetch(
       `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${tokenIds.join(
         ','
-      )}&order=market_cap_desc&per_page=250&page=1&sparkline=true`,
+      )}&order=market_cap_desc&per_page=250&page=1&sparkline=true&price_change_percentage=24h,7d`,
       options
     );
     const data: any[] = await res.json();
@@ -168,11 +169,17 @@ const getCoinGeckoTokensMarketData = async (
       );
     let tokensMarketData: ITokensMartketData = {};
     data.forEach((tokenMarketData: any) => {
+      const price7dAgo =
+        tokenMarketData.current_price -
+        (tokenMarketData.current_price *
+          tokenMarketData.price_change_percentage_7d_in_currency) /
+          100;
       tokensMarketData[tokenMarketData.id] = {
         price: tokenMarketData.current_price,
         logoPath: tokenMarketData.image,
         change24h: tokenMarketData.price_change_percentage_24h,
-        sparkline: tokenMarketData.sparkline_in_7d,
+        price7d: price7dAgo,
+        sparkline: tokenMarketData.sparkline_in_7d.price,
       };
     });
     return tokensMarketData;
@@ -206,6 +213,7 @@ const updateTokenBalancesWithMarketData = async (
         change24h: tokensMarketData[id].change24h
           ? tokensMarketData[id].change24h
           : 0,
+        price7d: tokensMarketData[id].price7d,
         sparkline: tokensMarketData[id].sparkline,
         value: value,
       };
@@ -228,6 +236,43 @@ const updateTokenBalancesWithMarketData = async (
       );
     }
   }
+};
+
+const calculateSparklineSums = (blockchainBalances: BlockchainBalancesType) => {
+  let result: SparklineSumsType = {
+    sparkline: [],
+  };
+  const sparklineLength = 170;
+  const firstChainId = Object.keys(blockchainBalances)[0];
+  if (firstChainId) {
+    result.sparkline = new Array(sparklineLength)
+      .fill(null)
+      .map((_, index) => ({
+        timestamp: Date.now() - index * 60 * 60 * 1000,
+        value: 0,
+      }));
+  }
+  result.sparkline.reverse();
+  for (let chainId in blockchainBalances) {
+    let tokenBalances = blockchainBalances[chainId].tokenBalances;
+    result[chainId] = [...result.sparkline].map((data) => ({
+      ...data,
+      value: 0,
+    }));
+    for (let token of tokenBalances) {
+      let tokenSparkline = token.sparkline;
+      const difference = sparklineLength - tokenSparkline.length;
+      for (let i = 0; i < sparklineLength; i++) {
+        let value = token.price7d * token.holdings;
+        if (i >= difference)
+          value = tokenSparkline[i - difference] * token.holdings;
+        if (i === sparklineLength - 1) value = token.price * token.holdings;
+        result.sparkline[i].value += value;
+        result[chainId][i].value += value;
+      }
+    }
+  }
+  return result;
 };
 
 interface PortfolioPageProps {
@@ -268,6 +313,10 @@ const PortfolioPage: FC<PortfolioPageProps> = async ({ address }) => {
       return accumulator;
     },
     {}
+  );
+
+  const chainBalanceSparklines = calculateSparklineSums(
+    balances.blockchainBalances
   );
 
   return (

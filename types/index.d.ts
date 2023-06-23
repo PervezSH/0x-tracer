@@ -8,6 +8,7 @@ export interface ITokenBalanceInfo {
   percentage: number;
   change24h: number;
   logoPath: string;
+  price7d: number;
   sparkline: number[];
 }
 
@@ -15,6 +16,7 @@ interface ITokenMarketData {
   price: number;
   logoPath: string;
   change24h: number;
+  price7d: number;
   sparkline: number[];
 }
 
@@ -28,4 +30,13 @@ export type BlockchainBalancesType = {
 
 export type CoinGeckoTokenIdsType = {
   [tokenChainAndAddress: string]: string;
+};
+type SparklineData = {
+  timestamp: number;
+  value: number;
+};
+
+export type SparklineSumsType = {
+  sparkline: SparklineData[];
+  [chain: number]: SparklineData[];
 };
