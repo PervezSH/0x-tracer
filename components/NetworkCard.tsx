@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import Image from 'next/image';
 
-import { chainDetails, formatCurrencyValue } from '@utils';
+import { chainDetails, formatCurrencyValue, percentageChange } from '@utils';
 import { NetCurve } from '@components';
 import { SparklineData } from '@types';
 
@@ -22,6 +22,11 @@ const NetworkCard: FC<INetworkCardProps> = ({
   sparkline = [],
   onClick,
 }) => {
+  const sparklinePercentage = percentageChange(
+    sparkline[sparkline.length - 1].value,
+    sparkline[0].value
+  );
+
   return (
     <div
       className={`rounded-4 border-0 ${
@@ -77,10 +82,12 @@ const NetworkCard: FC<INetworkCardProps> = ({
             style={{ width: '125px' }}
           >
             <p
-              className="text-success fw-semibold m-0"
+              className={`text-success fw-semibold m-0 ${
+                sparklinePercentage.isNegative ? 'text-danger' : 'text-success'
+              }`}
               style={{ fontSize: '12px' }}
             >
-              {`+10.50%`}
+              {`${sparklinePercentage.changeString}`}
             </p>
             <NetCurve
               data={sparkline}

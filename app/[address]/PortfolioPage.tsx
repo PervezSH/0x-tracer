@@ -271,6 +271,8 @@ const calculateSparklineSums = (blockchainBalances: BlockchainBalancesType) => {
         result[chainId][i].value += value;
       }
     }
+    result[chainId][sparklineLength - 1].value =
+      blockchainBalances[chainId].totalValue;
   }
   return result;
 };
