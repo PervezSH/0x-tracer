@@ -323,14 +323,15 @@ const PortfolioPage: FC<PortfolioPageProps> = async ({ address }) => {
     <main className="d-flex flex-column mt-5 mb-3 gap-3 ">
       <Hero />
       <Search />
-      <Profile address={address} />
+      <Profile address={address} sparkline={chainBalanceSparklines.sparkline} />
       <NetworkLists
         chainBalancePercentages={chainBalancePercentages}
+        chainSparklineSums={chainBalanceSparklines}
         balances={balances}
       />
       <div className="d-flex flex-column gap-4 flex-lg-row align-items-center justify-content-between">
         <OverviewCard blockchainBalances={balances.blockchainBalances} />
-        <PerformanceCard />
+        <PerformanceCard chainBalanceSparklineSums={chainBalanceSparklines} />
       </div>
       <AssetsCard blockchainBalances={balances.blockchainBalances} />
     </main>

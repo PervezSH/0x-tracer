@@ -109,17 +109,13 @@ const NetCurve: FC<INetCurveProps> = ({
     <ResponsiveContainer width="100%" height={height ? height : 128}>
       <AreaChart data={data}>
         <defs>
-          <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-            <stop
-              offset="5%"
-              stopColor={isNegative ? '#F05352' : '#9DC644'}
-              stopOpacity={0.8}
-            />
-            <stop
-              offset="95%"
-              stopColor={isNegative ? '#F05352' : '#9DC644'}
-              stopOpacity={0}
-            />
+          <linearGradient id="color-pos" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor={'#9DC644'} stopOpacity={0.8} />
+            <stop offset="95%" stopColor={'#9DC644'} stopOpacity={0} />
+          </linearGradient>
+          <linearGradient id="color-neg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor={'#F05352'} stopOpacity={0.8} />
+            <stop offset="95%" stopColor={'#F05352'} stopOpacity={0} />
           </linearGradient>
         </defs>
         {xAxis && (
@@ -150,7 +146,7 @@ const NetCurve: FC<INetCurveProps> = ({
           dataKey="value"
           stroke={isNegative ? '#F05352' : '#9DC644'}
           fillOpacity={1}
-          fill="url(#colorPv)"
+          fill={isNegative ? 'url(#color-neg)' : 'url(#color-pos)'}
           animationDuration={1000}
           strokeWidth={1.5}
         />

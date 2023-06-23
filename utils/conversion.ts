@@ -18,7 +18,7 @@ export function formatCurrencyValue(
 }
 
 export function getDateAndTime(unixTimestamp: number): string {
-  const date = new Date(unixTimestamp * 1000);
+  const date = new Date(unixTimestamp);
   const month = date.toLocaleString('default', { month: 'short' });
   const day = date.getDate();
   const hours = date.getHours();

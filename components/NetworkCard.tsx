@@ -1,14 +1,16 @@
 import { FC } from 'react';
 import Image from 'next/image';
 
-import { chainDetails, concisedUsdValue24h, formatCurrencyValue } from '@utils';
+import { chainDetails, formatCurrencyValue } from '@utils';
 import { NetCurve } from '@components';
+import { SparklineData } from '@types';
 
 interface INetworkCardProps {
   chainId: number;
   isSelected?: boolean;
   value: number;
   percentage: number;
+  sparkline: SparklineData[];
   onClick: () => void;
 }
 
@@ -17,6 +19,7 @@ const NetworkCard: FC<INetworkCardProps> = ({
   isSelected = false,
   value = 0,
   percentage = 0,
+  sparkline = [],
   onClick,
 }) => {
   return (
@@ -80,7 +83,7 @@ const NetworkCard: FC<INetworkCardProps> = ({
               {`+10.50%`}
             </p>
             <NetCurve
-              data={concisedUsdValue24h}
+              data={sparkline}
               tooltip={false}
               xAxis={false}
               height={25}

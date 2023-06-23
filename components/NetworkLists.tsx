@@ -4,10 +4,11 @@ import { FC, useEffect } from 'react';
 import { useHorizontalScroll } from '@hooks';
 import { NetworkCard } from '@components';
 import { useActiveChainIdContext } from '@contexts';
-import type { BlockchainBalancesType } from '@types';
+import type { BlockchainBalancesType, SparklineSumsType } from '@types';
 
 interface INetworkListsProps {
   chainBalancePercentages: { [chainId: number]: number };
+  chainSparklineSums: SparklineSumsType;
   balances: {
     totalValue: number;
     blockchainBalances: BlockchainBalancesType;
@@ -16,6 +17,7 @@ interface INetworkListsProps {
 
 const NetworkLists: FC<INetworkListsProps> = ({
   chainBalancePercentages,
+  chainSparklineSums,
   balances,
 }) => {
   const scrollRef = useHorizontalScroll();
@@ -47,6 +49,7 @@ const NetworkLists: FC<INetworkListsProps> = ({
           isSelected={activeChainId === Number(entries[0])}
           value={balances.blockchainBalances[Number(entries[0])].totalValue}
           percentage={chainBalancePercentages[Number(entries[0])]}
+          sparkline={chainSparklineSums[Number(entries[0])]}
           onClick={() =>
             dispatch({
               type: 'SET_ACTIVE_CHAIN_ID',

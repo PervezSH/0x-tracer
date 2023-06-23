@@ -2,8 +2,8 @@ import { FC } from 'react';
 import Image from 'next/image';
 
 import NetCurve from './NetCurve';
-import { usdValue24h } from '@utils';
 import { EnsAvatar, EnsName } from '@components';
+import type { SparklineData } from '@types';
 
 const getFirstTransfer = async (address: string) => {
   try {
@@ -30,9 +30,10 @@ const getFirstTransfer = async (address: string) => {
 
 interface ProfileProps {
   address: string;
+  sparkline: SparklineData[];
 }
 
-const Profile: FC<ProfileProps> = async ({ address }) => {
+const Profile: FC<ProfileProps> = async ({ address, sparkline }) => {
   const firstTransfer = await getFirstTransfer(address);
 
   return (
@@ -62,7 +63,7 @@ const Profile: FC<ProfileProps> = async ({ address }) => {
           </span>
         </div>
       </section>
-      <NetCurve data={usdValue24h} />
+      <NetCurve data={sparkline} />
     </div>
   );
 };
