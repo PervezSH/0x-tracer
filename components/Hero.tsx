@@ -9,7 +9,7 @@ const Hero: FC = () => {
         <span className="text-secondary">, and</span> trace
         <span className="text-secondary">
           {' '}
-          your decentralized assets across all blockchain networks
+          your decentralized assets across 8 blockchain networks
         </span>
       </p>
     </article>

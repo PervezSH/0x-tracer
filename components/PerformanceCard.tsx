@@ -17,7 +17,12 @@ const PerformanceCard: FC<{
         <h5 className="card-title m-0 fw-semibold">Performance</h5>
         <h4 className="card-title m-0 pt-1 fw-bold">{`Assets on ${chainDetails[activeChainId].name}`}</h4>
       </div>
-      <NetCurve data={chainBalanceSparklineSums[activeChainId]} height={200} />
+      {chainBalanceSparklineSums[activeChainId] && (
+        <NetCurve
+          data={chainBalanceSparklineSums[activeChainId]}
+          height={200}
+        />
+      )}
     </div>
   );
 };

@@ -291,6 +291,20 @@ const PortfolioPage: FC<PortfolioPageProps> = async ({ address }) => {
     coinGeckoIdsPromise,
     balancesPromise,
   ]);
+
+  if (
+    Object.keys(balances.blockchainBalances).length === 0 &&
+    balances.blockchainBalances.constructor === Object
+  ) {
+    return (
+      <main className="d-flex flex-column mt-5 mb-3 gap-3 ">
+        <Hero />
+        <Search />
+        <Profile address={address} sparkline={[]} />
+      </main>
+    );
+  }
+
   const tokensMarketData = await getCoinGeckoTokensMarketData(
     coinGeckoIds,
     balances.blockchainBalances

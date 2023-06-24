@@ -8,7 +8,10 @@ import type { SparklineData } from '@types';
 const getFirstTransfer = async (address: string) => {
   try {
     const res = await fetch(
-      `https://api.etherscan.io/api?module=account&action=tokentx&address=${address}&page=1&offset=1&startblock=0&sort=asc&apikey=${process.env.ETHERSCAN_API_KEY}}`
+      `https://api.etherscan.io/api?module=account&action=tokentx&address=${address}&page=1&offset=1&startblock=0&sort=asc&apikey=${process.env.ETHERSCAN_API_KEY}}`,
+      {
+        next: { revalidate: 86400 },
+      }
     );
     const data = await res.json();
     if (data.status !== '1') return null;
@@ -63,7 +66,7 @@ const Profile: FC<ProfileProps> = async ({ address, sparkline }) => {
           </span>
         </div>
       </section>
-      <NetCurve data={sparkline} />
+      {sparkline.length !== 0 && <NetCurve data={sparkline} />}
     </div>
   );
 };
