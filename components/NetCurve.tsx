@@ -107,7 +107,7 @@ const NetCurve: FC<INetCurveProps> = ({
 
   return (
     <ResponsiveContainer width="100%" height={height ? height : 128}>
-      <AreaChart data={data}>
+      <AreaChart data={data} style={{ cursor: 'pointer' }}>
         <defs>
           <linearGradient id="color-pos" x1="0" y1="0" x2="0" y2="1">
             <stop offset="5%" stopColor={'#9DC644'} stopOpacity={0.8} />
