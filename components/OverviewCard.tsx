@@ -90,7 +90,9 @@ const OverviewCard: FC<IOverviewCardProps> = ({ blockchainBalances }) => {
               blockchainBalances[activeChainId].totalValue,
               2,
               false,
-              ''
+              '',
+              10000000000,
+              2
             )}
         </h4>
       </div>

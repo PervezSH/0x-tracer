@@ -2,14 +2,28 @@ export function formatCurrencyValue(
   value: number,
   fractionDigits: number = 0,
   showNegativeSign: boolean = false,
-  currencySign: string = '$'
+  currencySign: string = '$',
+  shortFormatThreshold: number = 1000000000000,
+  shortFormatFractionDigits: number = 2
 ): string {
   const isNegative = value < 0;
   const absoluteValue = Math.abs(value);
-  const formattedValue = absoluteValue.toLocaleString('en-US', {
-    minimumFractionDigits: fractionDigits,
-    maximumFractionDigits: fractionDigits,
-  });
+
+  let formattedValue;
+
+  if (absoluteValue < shortFormatThreshold) {
+    formattedValue = absoluteValue.toLocaleString('en-US', {
+      minimumFractionDigits: fractionDigits,
+      maximumFractionDigits: fractionDigits,
+    });
+  } else {
+    const units = ['K', 'M', 'B', 'T'];
+    const order = Math.floor(Math.log(absoluteValue) / Math.log(1000));
+    const unitname = units[order - 1];
+    const num = absoluteValue / Math.pow(1000, order);
+
+    formattedValue = `${num.toFixed(shortFormatFractionDigits)}${unitname}`;
+  }
 
   const sign = isNegative && showNegativeSign ? '-' : '';
   const formattedWithSymbol = `${sign}${currencySign}${formattedValue}`;

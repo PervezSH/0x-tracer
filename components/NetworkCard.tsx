@@ -68,7 +68,7 @@ const NetworkCard: FC<INetworkCardProps> = ({
               }`}
               style={{ maxWidth: '92px' }}
             >
-              {formatCurrencyValue(value)}
+              {formatCurrencyValue(value, 0, false, '$', 1000000000)}
             </h6>
             <p
               className="text-secondary fw-semibold m-0"

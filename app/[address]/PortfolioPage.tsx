@@ -99,13 +99,13 @@ const getAddressBalances = async (
     const blockchainBalances: BlockchainBalancesType =
       data.result.assets.reduce((acc: BlockchainBalancesType, asset: any) => {
         const chainId = ankrBlockchainToId[asset.blockchain];
+        if (asset.balanceUsd <= 0.0099) return acc;
         if (!acc[chainId]) {
           acc[chainId] = {
             totalValue: 0,
             tokenBalances: [],
           };
         }
-        if (asset.balanceUsd <= 0.0099) return acc;
         acc[chainId].tokenBalances.push({
           name: asset.tokenName,
           symbol: asset.tokenSymbol,
