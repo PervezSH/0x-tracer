@@ -2,11 +2,12 @@
 import Image from 'next/image';
 import { FC, useRef, FormEvent, useState, useMemo } from 'react';
 import { isAddress } from 'ethers';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const Search: FC = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [inputValue, setInputValue] = useState<string>('');
@@ -15,7 +16,7 @@ const Search: FC = () => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const inputVal = inputRef.current?.value;
-    if (!inputVal) return;
+    if (!inputVal || pathname.includes(inputVal)) return;
     if (!isAddress(inputVal)) return;
     setSubmitted(true);
     router.push(`/${inputVal}`);
