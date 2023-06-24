@@ -62,6 +62,14 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
   border-radius: 10px;
 }
 
+::-moz-selection {
+  background: #b1def3;
+}
+
+::selection {
+  background: #b1def3;
+}
+
 * {
   scroll-behavior: smooth;
   scrollbar-width: thin; /* For Firefox */
