@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={openSans.className}>
         <Navbar />
-        <div className="container">
+        <div className="container px-3 pb-3 overflow-x-hidden overflow-y-visible">
           <JsonRpcContextProvider>{children}</JsonRpcContextProvider>
         </div>
       </body>

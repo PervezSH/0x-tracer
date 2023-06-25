@@ -1,7 +1,7 @@
 'use client';
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 
-import { useHorizontalScroll } from '@hooks';
 import { NetworkCard } from '@components';
 import { useActiveChainIdContext } from '@contexts';
 import type { BlockchainBalancesType, SparklineSumsType } from '@types';
@@ -17,7 +17,7 @@ const NetworkLists: FC<INetworkListsProps> = ({
   chainSparklineSums,
   blockchainBalances,
 }) => {
-  const scrollRef = useHorizontalScroll();
+  const dragRef = useRef<HTMLDivElement>(null);
   const { activeChainId, dispatch } = useActiveChainIdContext();
 
   const sortedEntries = Object.entries(chainBalancePercentages).sort(
@@ -34,27 +34,32 @@ const NetworkLists: FC<INetworkListsProps> = ({
   }, []);
 
   return (
-    <div
-      ref={scrollRef}
-      className="d-flex py-5 gap-3 overflow-x-auto scrollbar-none"
-      style={{ margin: '-18px 0px' }}
-    >
-      {sortedEntries.map((entries) => (
-        <NetworkCard
-          key={entries[0]}
-          chainId={Number(entries[0])}
-          isSelected={activeChainId === Number(entries[0])}
-          value={blockchainBalances[Number(entries[0])].totalValue}
-          percentage={chainBalancePercentages[Number(entries[0])]}
-          sparkline={chainSparklineSums[Number(entries[0])]}
-          onClick={() =>
-            dispatch({
-              type: 'SET_ACTIVE_CHAIN_ID',
-              payload: Number(entries[0]),
-            })
-          }
-        />
-      ))}
+    <div className="w-100" ref={dragRef}>
+      <motion.div
+        drag="x"
+        dragConstraints={dragRef}
+        dragElastic={0.1}
+        dragTransition={{ bounceStiffness: 100, bounceDamping: 20 }}
+        className="d-flex py-5 gap-3 overflow-x-visible w-fit"
+        style={{ margin: '-18px 0px', width: 'fit-content', cursor: 'grab' }}
+      >
+        {sortedEntries.map((entries) => (
+          <NetworkCard
+            key={entries[0]}
+            chainId={Number(entries[0])}
+            isSelected={activeChainId === Number(entries[0])}
+            value={blockchainBalances[Number(entries[0])].totalValue}
+            percentage={chainBalancePercentages[Number(entries[0])]}
+            sparkline={chainSparklineSums[Number(entries[0])]}
+            onClick={() =>
+              dispatch({
+                type: 'SET_ACTIVE_CHAIN_ID',
+                payload: Number(entries[0]),
+              })
+            }
+          />
+        ))}
+      </motion.div>
     </div>
   );
 };

@@ -5,7 +5,7 @@ const Navbar = () => {
   return (
     <header className="header border-bottom border-2">
       <nav className="navbar navbar-expand py-2">
-        <div className="container">
+        <div className="container px-3">
           <Link className="navbar-brand" href="/">
             <Image
               src={'/assets/logos/logo-dark.svg'}

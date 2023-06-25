@@ -343,7 +343,7 @@ const PortfolioPage: FC<PortfolioPageProps> = async ({ address }) => {
   );
 
   return (
-    <main className="d-flex flex-column mt-5 mb-3 gap-3 ">
+    <main className="d-flex flex-column mt-5 mb-3 gap-3">
       <Hero />
       <Search />
       <Profile address={address} sparkline={chainBalanceSparklines.sparkline} />
