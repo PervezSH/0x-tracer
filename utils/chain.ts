@@ -1,4 +1,4 @@
-export const chainIds = [1, 137, 56, 43114, 250, 10, 42161];
+export const chainIds = [1, 137, 56, 43114, 250, 10, 42161, 1101];
 
 export const ankrBlockchainToId: {
   [blockchain: string]: number;
@@ -55,6 +55,7 @@ export interface IChainDetail {
   symbol: string;
   logoPath: string;
   themeBg: string;
+  explorerURL: string;
 }
 
 export const chainDetails: {
@@ -65,53 +66,55 @@ export const chainDetails: {
     symbol: 'ETH',
     logoPath: 'assets/logos/ethereum.svg',
     themeBg: 'rgba(81, 123, 231, 0.25)',
+    explorerURL: 'https://etherscan.io',
   },
   137: {
     name: 'Polygon',
     symbol: 'MATIC',
     logoPath: 'assets/logos/polygon.svg',
     themeBg: 'rgba(121, 80, 221, 0.25)',
+    explorerURL: 'https://polygonscan.com',
   },
   56: {
     name: 'Binance Smart Chain',
     symbol: 'BNB',
     logoPath: 'assets/logos/binance.svg',
     themeBg: 'rgba(239, 185, 11, 0.25)',
+    explorerURL: 'https://bscscan.com',
   },
   43114: {
     name: 'Avalanche',
     symbol: 'AVAX',
     logoPath: 'assets/logos/avalanche.svg',
     themeBg: 'rgba(232, 65, 66, 0.25)',
+    explorerURL: 'https://snowtrace.io',
   },
   250: {
     name: 'Fantom',
     symbol: 'FTM',
     logoPath: 'assets/logos/fantom.svg',
     themeBg: 'rgba(3, 98, 249, 0.25)',
+    explorerURL: 'https://ftmscan.com',
   },
   10: {
     name: 'Optimism',
     symbol: 'ETH',
     logoPath: 'assets/logos/optimism.svg',
     themeBg: 'rgba(254, 5, 33, 0.25)',
+    explorerURL: 'https://optimistic.etherscan.io',
   },
   42161: {
     name: 'Arbitrum',
     symbol: 'ETH',
     logoPath: 'assets/logos/arbitrum.svg',
     themeBg: 'rgba(18, 170, 255, 0.25)',
-  },
-  324: {
-    name: 'zkSync Era',
-    symbol: 'ETH',
-    logoPath: 'assets/logos/zksync.svg',
-    themeBg: 'rgba(140, 141, 252, 0.25)',
+    explorerURL: 'https://arbiscan.io',
   },
   1101: {
     name: 'Polygon ZK-EVM',
     symbol: 'ETH',
     logoPath: 'assets/logos/polygon.svg',
     themeBg: 'rgba(121, 80, 221, 0.25)',
+    explorerURL: 'https://zkevm.polygonscan.com',
   },
 };

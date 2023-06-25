@@ -8,10 +8,14 @@ import { chainDetails, formatCurrencyValue } from '@utils';
 import type { BlockchainBalancesType, ITokenBalanceInfo } from '@types';
 
 interface IOverviewCardProps {
+  address: string;
   blockchainBalances: BlockchainBalancesType;
 }
 
-const OverviewCard: FC<IOverviewCardProps> = ({ blockchainBalances }) => {
+const OverviewCard: FC<IOverviewCardProps> = ({
+  address,
+  blockchainBalances,
+}) => {
   const { activeChainId } = useActiveChainIdContext();
   const [pieChartData, setPieChartData] = useState<
     {
@@ -81,6 +85,11 @@ const OverviewCard: FC<IOverviewCardProps> = ({ blockchainBalances }) => {
             width={24}
             height={24}
             style={{ cursor: 'pointer' }}
+            onClick={() =>
+              window.open(
+                `${chainDetails[activeChainId].explorerURL}/address/${address}`
+              )
+            }
           />
         </div>
         <h4 className="card-title m-0 pt-1 fw-bold">
